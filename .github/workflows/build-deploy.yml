@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 env:
   AZURE_WEBAPP_NAME: app-calicot-dev-15
-  AZURE_WEBAPP_PACKAGE_PATH: './CalicotEncheres/Auctions'
+  AZURE_WEBAPP_PACKAGE_PATH: '.'
   DOTNET_VERSION: '8.0.x'
 
 jobs:
