@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 env:
   AZURE_WEBAPP_NAME: app-calicot-dev-15
-  AZURE_WEBAPP_PACKAGE_PATH: '.'
+  AZURE_WEBAPP_PACKAGE_PATH: './CalicotEncheres/Auctions'
   DOTNET_VERSION: '8.0.x'
 
 jobs:
@@ -29,7 +29,7 @@ jobs:
         run: |
           dotnet restore
           dotnet build --configuration Release
-          dotnet publish -c Release --property:PublishDir='${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/webapp' 
+          dotnet publish -c Release --property:PublishDir='./webapp' 
           
 
       - name: 'Run Azure webapp deploy action using Azure Credentials'
