@@ -1,4 +1,4 @@
-name: Web application build
+name: Build & Deploy webapp
 
 on: workflow_dispatch
 
