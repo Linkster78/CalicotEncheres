@@ -2,7 +2,7 @@ name: IaC
 on: workflow_dispatch
 
 jobs:
-  terraform-plan:
+  terraform-plan:  
       name: 'Terraform Plan'
       runs-on: ubuntu-latest
       env:
@@ -12,6 +12,9 @@ jobs:
         tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
   
       steps:
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
       # Checkout the repository to the GitHub Actions runner
       - name: Checkout
         uses: actions/checkout@v4
@@ -104,6 +107,9 @@ jobs:
     needs: [terraform-plan]
     
     steps:
+    - uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     # Checkout the repository to the GitHub Actions runner
     - name: Checkout
       uses: actions/checkout@v4
