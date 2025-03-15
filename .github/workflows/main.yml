@@ -11,8 +11,6 @@ jobs:
     - name: Azure CLI Login
       uses: azure/login@v2
       with:
-        client-secret: ${{ secrets.CLIENTSECRET }}
-        
         client-id: ${{ vars.CLIENTID }}
         tenant-id: ${{ vars.TENANTID }}
         subscription-id: ${{ vars.SUBSCRIPTIONID }}
