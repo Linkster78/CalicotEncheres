@@ -13,8 +13,11 @@ jobs:
        with:
          dotnet-version: '8.0.x'
      - name: Install dependencies
+       working-directory: ./CalicotEncheres/Auctions
        run: dotnet restore
      - name: Build
+       working-directory: ./CalicotEncheres/Auctions
        run: dotnet build --no-restore
      - name: Test with the dotnet CLI
+       working-directory: ./CalicotEncheres/Auctions
        run: dotnet test --no-build
