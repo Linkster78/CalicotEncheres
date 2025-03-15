@@ -2,22 +2,41 @@ name: Web application build
 
 on: workflow_dispatch
 
+env:
+  AZURE_WEBAPP_NAME: app-calicot-dev-15
+  AZURE_WEBAPP_PACKAGE_PATH: './CalicotEncheres/Auctions'
+  DOTNET_VERSION: '8.0.x'
+
 jobs:
   build:
-
     runs-on: ubuntu-latest
+
     steps:
-     - uses: actions/checkout@v4
-     - name: Setup dotnet
-       uses: actions/setup-dotnet@v4
-       with:
-         dotnet-version: '8.0.x'
-     - name: Install dependencies
-       working-directory: ./CalicotEncheres/Auctions
-       run: dotnet restore
-     - name: Build
-       working-directory: ./CalicotEncheres/Auctions
-       run: dotnet build --no-restore
-     - name: Test with the dotnet CLI
-       working-directory: ./CalicotEncheres/Auctions
-       run: dotnet test --no-build
+      - uses: actions/checkout@main
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }} 
+      
+
+      - name: dotnet build and publish
+        run: |
+          dotnet restore
+          dotnet build --configuration Release
+          dotnet publish -c Release --property:PublishDir='${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/webapp' 
+          
+
+      - name: 'Run Azure webapp deploy action using Azure Credentials'
+        uses: azure/webapps-deploy@v3
+        with: 
+          app-name: ${{ env.AZURE_WEBAPP_NAME }} 
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/webapp'
+      
+      - name: logout
+        run: |
+          az logout
