@@ -122,6 +122,8 @@ resource "random_password" "dbadmin" {
   override_special = "!*%?#-_"
 }
 
+# un essai à mettre la bd mssql dans le subnet db...
+
 # resource "azurerm_private_link_service" "db-link" {
 #   name                = "sqlsrv-calicot-link-${var.tag}-15"
 #   load_balancer_frontend_ip_configuration_ids = []
@@ -165,27 +167,23 @@ resource "azurerm_mssql_database" "db" {
   sku_name = "Basic"
 }
 
+# pour une certaine raison, les access policies n'ont jamais marché
 resource "azurerm_key_vault" "vault" {
   name                = "kv-calicot-${var.tag}-15"
   location            = var.location
   resource_group_name = var.resource_group
   sku_name            = "standard"
   tenant_id           = data.azurerm_client_config.current.tenant_id
-  enable_rbac_authorization = true
-}
 
-resource "azurerm_role_assignment" "vault_sp_assignment" {
-  principal_id = data.azurerm_client_config.current.object_id
-  scope        = azurerm_key_vault.vault.id
-  role_definition_name = "Key Vault Administrator"
-}
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = data.azurerm_client_config.current.object_id
+    secret_permissions = ["Set", "List", "Get"]
+  }
 
-resource "azurerm_key_vault_access_policy" "svc_assignment" {
-  key_vault_id = azurerm_key_vault.vault.id
-  tenant_id = data.azurerm_client_config.current.tenant_id
-  object_id    = azurerm_linux_web_app.service.identity[0].principal_id
-
-  secret_permissions = [
-    "Get"
-  ]
+  access_policy {
+    tenant_id = data.azurerm_client_config.current.tenant_id
+    object_id = azurerm_linux_web_app.service.identity[0].principal_id
+    secret_permissions = ["Get"]
+  }
 }
