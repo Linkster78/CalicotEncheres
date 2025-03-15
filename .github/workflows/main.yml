@@ -11,9 +11,9 @@ jobs:
     - name: Azure CLI Login
       uses: azure/login@v2
       with:
-        client-id: ${{ variable.CLIENTID }}
-        tenant-id: ${{ variable.TENANTID }}
-        subscription-id: ${{ variable.SUBSCRIPTIONID }}
+        client-id: ${{ vars.CLIENTID }}
+        tenant-id: ${{ vars.TENANTID }}
+        subscription-id: ${{ vars.SUBSCRIPTIONID }}
   
     - name: Azure CLI script
       uses: azure/cli@v2
