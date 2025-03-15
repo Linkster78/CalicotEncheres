@@ -6,7 +6,7 @@ jobs:
       name: 'Terraform Plan'
       runs-on: ubuntu-latest
       env:
-        ARM_CLIENT_SECRET: ${{ secrets.AZURE_SECRET_KEY }}
+        ARM_CLIENT_SECRET: ${{ secrets.AZURE_CLIENT_SECRET }}
         ARM_SKIP_PROVIDER_REGISTRATION: true
       outputs:
         tfplanExitCode: ${{ steps.tf-plan.outputs.exitcode }}
