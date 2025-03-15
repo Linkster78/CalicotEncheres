@@ -1,4 +1,4 @@
-name: Run Azure Login With a Service Principal Secret
+name: IaC
 on: workflow_dispatch
 
 jobs:
